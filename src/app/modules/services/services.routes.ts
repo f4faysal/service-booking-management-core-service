@@ -11,7 +11,9 @@ router.post(
   ServiceController.insertIntoDB
 );
 router.get('/', ServiceController.getAllFromDB);
+router.get('/:categoryId/category', ServiceController.getServiceByCategoryId);
 router.get('/:id', ServiceController.getByIdFromDB);
+
 router.patch(
   '/:id',
   auth(ENUM_USER_ROLE.ADMIN),

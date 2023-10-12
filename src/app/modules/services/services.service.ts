@@ -95,6 +95,52 @@ const getAllFromDB = async (
   };
 };
 
+const getServiceByCategoryId = async (
+  categoryId: string,
+  options: IPaginationOptions
+): Promise<IGenericResponse<Services[]>> => {
+  const { page, limit, skip } = paginationHelpers.calculatePagination(options);
+
+  const result = await prisma.services.findMany({
+    where: {
+      category: {
+        id: categoryId,
+      },
+    },
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {
+            price: 'desc',
+          },
+    include: {
+      category: true,
+    },
+  });
+
+  const total = await prisma.services.count({
+    where: {
+      category: {
+        id: categoryId,
+      },
+    },
+  });
+
+  const totalPage = Math.ceil(total / limit);
+
+  return {
+    meta: {
+      total,
+      page,
+      limit,
+      totalPage,
+    },
+    data: result,
+  };
+};
+
 const getByIdFromDB = async (id: string): Promise<Services | null> => {
   const result = await prisma.services.findUnique({ where: { id } });
   return result;
@@ -114,6 +160,7 @@ const deleteFromDB = async (id: string): Promise<Services | null> => {
 export const ServicesService = {
   insertIntoDB,
   getAllFromDB,
+  getServiceByCategoryId,
   getByIdFromDB,
   updateIntoDB,
   deleteFromDB,

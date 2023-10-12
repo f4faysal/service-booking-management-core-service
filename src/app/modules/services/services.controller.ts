@@ -31,6 +31,23 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getServiceByCategoryId = catchAsync(
+  async (req: Request, res: Response) => {
+    const categoryId = req.params.categoryId;
+    const options = pick(req.query, paginationFields);
+    const result = await ServicesService.getServiceByCategoryId(
+      categoryId,
+      options
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Book fetched successfully',
+      data: result,
+    });
+  }
+);
 
 const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -76,4 +93,5 @@ export const ServiceController = {
   getByIdFromDB,
   updateIntoDB,
   deleteFromDB,
+  getServiceByCategoryId,
 };
