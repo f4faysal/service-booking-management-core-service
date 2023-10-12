@@ -2,18 +2,23 @@ import { Request, RequestHandler, Response } from 'express';
 import httpStatus from 'http-status';
 
 import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
+import { userFilterableFields } from './user.contants';
 import { UserService } from './user.service';
 
 const getAllFromDB: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await UserService.getAllFromDB();
+    const filters = pick(req.query, userFilterableFields);
+    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = await UserService.getAllFromDB(filters, options);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'User fetched successfully',
-      data: result,
+      meta: result.meta,
+      data: result.data,
     });
   }
 );

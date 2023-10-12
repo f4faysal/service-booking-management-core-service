@@ -4,3 +4,11 @@ export type IProfileUpdate = {
   contactNumber?: string;
   profileImg?: string;
 };
+
+export type IUserFilterRequest = {
+  search?: string;
+  email?: string;
+  name?: string;
+  contactNumber?: string;
+  role?: string;
+};
