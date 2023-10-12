@@ -8,6 +8,7 @@ import { serviceFilterableFields } from './services.contants';
 import { ServicesService } from './services.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
+  console.log(req.body);
   const result = await ServicesService.insertIntoDB(req.body);
 
   sendResponse(res, {
@@ -89,6 +90,7 @@ const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
 
 export const ServiceController = {
   insertIntoDB,
+
   getAllFromDB,
   getByIdFromDB,
   updateIntoDB,

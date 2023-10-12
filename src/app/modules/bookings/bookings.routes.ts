@@ -6,10 +6,10 @@ import { BookingsController } from './bookings.controller';
 
 const router = express.Router();
 
-router.get(
-  '/users/all',
+router.post(
+  '/',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
-  BookingsController.getAllFromDB
+  BookingsController.insartIntoDB
 );
 
 export const BookingsRouter = router;

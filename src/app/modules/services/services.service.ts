@@ -159,6 +159,7 @@ const deleteFromDB = async (id: string): Promise<Services | null> => {
 
 export const ServicesService = {
   insertIntoDB,
+
   getAllFromDB,
   getServiceByCategoryId,
   getByIdFromDB,
