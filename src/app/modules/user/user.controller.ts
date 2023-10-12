@@ -34,13 +34,13 @@ const getByIdFromDB: RequestHandler = catchAsync(
 
 const updateIntoDB: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const result = await UserService.updateIntoDB(id, req.body);
+    const { userId } = req.user as { userId: string };
+    const result = await UserService.updateIntoDB(userId, req.body);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'User updated successfully',
+      message: 'Profile updated successfully',
       data: result,
     });
   }
@@ -76,10 +76,25 @@ const getProfile: RequestHandler = catchAsync(
   }
 );
 
+const updateAdminRoles: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const result = await UserService.updateAdminRoles(id, req.body);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Updated successfully',
+      data: result,
+    });
+  }
+);
+
 export const UserController = {
   getAllFromDB,
   getByIdFromDB,
   updateIntoDB,
   deleteFromDB,
   getProfile,
+  updateAdminRoles,
 };
