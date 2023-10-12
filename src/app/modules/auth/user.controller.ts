@@ -29,6 +29,18 @@ const addNewAdmin: RequestHandler = catchAsync(
     });
   }
 );
+const addNewUser: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await UserService.addNewUser(req.body);
+    console.log(req.body);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'User created successfully',
+      data: result,
+    });
+  }
+);
 const loginUser: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { ...loginData } = req.body;
@@ -50,4 +62,5 @@ export const UserController = {
   registerUSer,
   loginUser,
   addNewAdmin,
+  addNewUser,
 };

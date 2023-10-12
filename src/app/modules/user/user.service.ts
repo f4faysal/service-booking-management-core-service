@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import prisma from '../../../shared/prisma';
 import { IProfileUpdate } from './user.interface';
 
@@ -35,9 +35,30 @@ const updateIntoDB = async (
   return result;
 };
 
-const deleteFromDB = async (id: string): Promise<User | null> => {
-  const result = await prisma.user.delete({ where: { id } });
-  return result;
+const deleteFromDB = async (
+  id: string,
+  userId: string
+): Promise<User | null> => {
+  const isAdminExist = await prisma.user.findUnique({ where: { id: userId } });
+
+  if (isAdminExist?.role === Role.admin) {
+    const isUserExist = await prisma.user.findUnique({ where: { id } });
+    if (isUserExist?.role === Role.user) {
+      const result = await prisma.user.delete({ where: { id } });
+      return result;
+    } else {
+      return null;
+    }
+  } else if (isAdminExist?.role === Role.super_admin) {
+    const isUserExist = await prisma.user.findUnique({ where: { id } });
+    if (isUserExist?.role === Role.user || isUserExist?.role === Role.admin) {
+      const result = await prisma.user.delete({ where: { id } });
+      return result;
+    } else {
+      return null;
+    }
+  }
+  return null;
 };
 
 const getProfile = async (userId: string): Promise<User | null> => {

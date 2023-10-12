@@ -12,6 +12,11 @@ router.post(
   auth(ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.addNewAdmin
 );
+router.post(
+  '/admin/users',
+  auth(ENUM_USER_ROLE.ADMIN),
+  UserController.addNewUser
+);
 router.post('/login', UserController.loginUser);
 
 export const AuthRouter = router;

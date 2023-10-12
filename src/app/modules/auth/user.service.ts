@@ -41,6 +41,22 @@ const addNewAdmin = async (user: User): Promise<User> => {
   const result = await prisma.user.create({ data: user });
   return result;
 };
+const addNewUser = async (user: User): Promise<User> => {
+  if (!user.password) {
+    user.password = config.default_pass as string;
+  }
+  if (!user.role) {
+    user.role = Role.user;
+  }
+
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bycrypt_salt_rounds)
+  );
+
+  const result = await prisma.user.create({ data: user });
+  return result;
+};
 const loginUser = async (payload: { email: string; password: string }) => {
   const { email, password } = payload;
 
@@ -80,4 +96,5 @@ export const UserService = {
   registerUSer,
   addNewAdmin,
   loginUser,
+  addNewUser,
 };
