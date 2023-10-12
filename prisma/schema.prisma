@@ -62,22 +62,22 @@ model Services {
 }
 
 model Booking {
-  id        String   @id @default(uuid())
+  id        String        @id @default(uuid())
   date      String
   startTime String
   endTime   String
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User          @relation(fields: [userId], references: [id])
   serviceId String
-  service   Services @relation(fields: [serviceId], references: [id])
-  status    Status
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  service   Services      @relation(fields: [serviceId], references: [id])
+  status    BookingStatus
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 
   @@map("bookings")
 }
 
-enum Status {
+enum BookingStatus {
   pending
   accepted
   rejected

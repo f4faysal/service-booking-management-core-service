@@ -6,7 +6,9 @@ import { BookingsService } from './bookings.service';
 
 const insartIntoDB: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const result = await BookingsService.insartIntoDB(req.body);
+    const { userId } = req.user as { userId: string };
+
+    const result = await BookingsService.insartIntoDB(req.body, userId);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
