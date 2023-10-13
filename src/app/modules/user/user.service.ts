@@ -14,6 +14,17 @@ const getAllFromDB = async (
   const { search, ...filterData } = filters;
 
   const andConditions = [];
+  // if (search) {
+  //   andConditions.push({
+  //     OR: userSearchableFields.map(field => ({
+  //       [field]: {
+  //         contains: search,
+  //         mode: 'insensitive',
+  //       },
+  //     })),
+  //   });
+  // }
+
   if (search) {
     andConditions.push({
       OR: userSearchableFields.map(field => ({
@@ -24,17 +35,17 @@ const getAllFromDB = async (
       })),
     });
   }
+
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
-      AND: Object.keys(filterData).map(key => {
-        return {
-          [key]: {
-            equals: (filterData as any)[key],
-          },
-        };
-      }),
+      AND: Object.keys(filterData).map(key => ({
+        [key]: {
+          equals: (filterData as any)[key],
+        },
+      })),
     });
   }
+
   const whereConditions: Prisma.UserWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
   const result = await prisma.user.findMany({

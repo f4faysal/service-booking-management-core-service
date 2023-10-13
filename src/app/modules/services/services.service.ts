@@ -3,7 +3,11 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import { serviceSearchableFields } from './services.contants';
+import {
+  facultyRelationalFields,
+  facultyRelationalFieldsMapper,
+  serviceSearchableFields,
+} from './services.contants';
 import { IServiceFilters } from './services.interface';
 
 const insertIntoDB = async (data: Services): Promise<Services> => {
@@ -20,7 +24,7 @@ const getAllFromDB = async (
   filters: IServiceFilters,
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<Services[]>> => {
-  const { search } = filters;
+  const { search, ...filterData } = filters;
   const { page, limit, skip } =
     paginationHelpers.calculatePagination(paginationOptions);
 
@@ -34,6 +38,26 @@ const getAllFromDB = async (
           mode: 'insensitive',
         },
       })),
+    });
+  }
+
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map(key => {
+        if (facultyRelationalFields.includes(key)) {
+          return {
+            [facultyRelationalFieldsMapper[key]]: {
+              id: (filterData as any)[key],
+            },
+          };
+        } else {
+          return {
+            [key]: {
+              equals: (filterData as any)[key],
+            },
+          };
+        }
+      }),
     });
   }
 

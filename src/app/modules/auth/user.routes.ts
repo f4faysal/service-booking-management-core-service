@@ -15,6 +15,7 @@ router.post(
 );
 router.post(
   '/superadmin/users',
+  validateRequest(userValidation.create),
   auth(ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.addNewAdmin
 );
