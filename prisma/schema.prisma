@@ -82,3 +82,25 @@ enum BookingStatus {
   accepted
   rejected
 }
+
+model Blog {
+  id        String @id @default(uuid())
+  title     String
+  content   String
+  imageLink String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("blogs")
+}
+
+model Faqs {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("faqs")
+}
