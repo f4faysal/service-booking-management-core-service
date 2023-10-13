@@ -7,6 +7,7 @@ import { CategoryRoutes } from '../modules/category/category.routes';
 import { ReviewAndRatingRoutes } from '../modules/reviewAndRating/reviewAndRating.routes';
 import { ServicesRouter } from '../modules/services/services.routes';
 import { UserRouter } from '../modules/user/user.routes';
+import { FaqsRoutes } from '../modules/faqs/faqs.toute';
 
 const router = express.Router();
 
@@ -39,6 +40,10 @@ const moduleRoutes = [
   {
     path: '/blogs',
     routes: BlogRoutes,
+  },
+  {
+    path: '/faqs',
+    routes: FaqsRoutes,
   },
 ];
 
