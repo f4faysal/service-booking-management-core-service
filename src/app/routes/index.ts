@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { AuthRouter } from '../modules/auth/user.routes';
+import { BlogRoutes } from '../modules/blog/blog.toute';
 import { BookingsRouter } from '../modules/bookings/bookings.routes';
 import { CategoryRoutes } from '../modules/category/category.routes';
 import { ReviewAndRatingRoutes } from '../modules/reviewAndRating/reviewAndRating.routes';
@@ -34,6 +35,10 @@ const moduleRoutes = [
   {
     path: '/review',
     routes: ReviewAndRatingRoutes,
+  },
+  {
+    path: '/blogs',
+    routes: BlogRoutes,
   },
 ];
 

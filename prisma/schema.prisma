@@ -84,15 +84,14 @@ enum BookingStatus {
 }
 
 model Blog {
-  id        String @id @default(uuid())
+  id        String   @id @default(uuid())
   title     String
   content   String
   imageLink String
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("blogs")
+  @@map("blog")
 }
 
 model Faqs {
