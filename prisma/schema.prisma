@@ -22,6 +22,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   Booking       Booking[]
+  Reviews       Reviews[]
 
   @@map("users")
 }
@@ -48,17 +49,54 @@ model Services {
   id          String     @id @default(uuid())
   title       String
   description String
-  reviews     String[]
   price       String
   tax         String
   categoryId  String
+  location    Location
   category    Categories @relation(fields: [categoryId], references: [id])
   imageLink   String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  Booking     Booking[]
+  booking     Booking[]
+  reviews     Reviews[]
 
   @@map("services")
+}
+
+enum Location {
+  Mirpur
+  Uttara
+  Gulshan
+  Banani
+  Dhanmondi
+  Mohammadpur
+  Motijheel
+  Khilgaon
+  Shyamoli
+  Farmgate
+  Mohakhali
+  Tejgaon
+  Rampura
+  Badda
+  Malibagh
+  Jatrabari
+  Demra
+  Kadamtali
+  Keraniganj
+}
+
+model Reviews {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  serviceId String
+  service   Services @relation(fields: [serviceId], references: [id])
+  review    String
+  rating    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
 }
 
 model Booking {
@@ -102,4 +140,15 @@ model Faqs {
   updatedAt DateTime @updatedAt
 
   @@map("faqs")
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("feedback")
 }
