@@ -12,4 +12,27 @@ router.post(
   BookingsController.insartIntoDB
 );
 
+router.get(
+  '/',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  BookingsController.getAllFromDB
+);
+router.get(
+  '/:id',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  BookingsController.getByIdFromDB
+);
+
+router.patch(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  BookingsController.updateOneInDB
+);
+
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  BookingsController.deleteByIdFromDB
+);
+
 export const BookingsRouter = router;

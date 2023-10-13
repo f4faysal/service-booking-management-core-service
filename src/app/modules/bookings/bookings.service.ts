@@ -2,6 +2,7 @@ import { Booking, BookingStatus } from '@prisma/client';
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
 import prisma from '../../../shared/prisma';
+import { hasTimeConflict } from '../../../shared/utils';
 
 const insartIntoDB = async (data: Booking, id: string): Promise<Booking> => {
   if (data) {
@@ -27,21 +28,8 @@ const insartIntoDB = async (data: Booking, id: string): Promise<Booking> => {
     endTime: data.endTime,
   };
 
-  console.log(existingBooking);
-  console.log(newSlot);
-
-  for (const slot of existingBooking) {
-    const existingStart = new Date(`${slot.date}T${slot.startTime}:00`);
-    const existingEnd = new Date(`${slot.date}T${slot.endTime}:00`);
-    const newStart = new Date(`${newSlot.date}T${newSlot.startTime}:00`);
-    const newEnd = new Date(`${newSlot.date}T${newSlot.endTime}:00`);
-
-    // console.log(existingStart, existingEnd);
-    // console.log(newStart, newEnd);
-
-    if (newStart < existingEnd && newEnd > existingStart) {
-      throw new ApiError(httpStatus.CONFLICT, 'Slot already booked');
-    }
+  if (hasTimeConflict(existingBooking, newSlot)) {
+    throw new ApiError(httpStatus.CONFLICT, 'Time slot already booked');
   }
 
   const result = await prisma.booking.create({
@@ -54,6 +42,86 @@ const insartIntoDB = async (data: Booking, id: string): Promise<Booking> => {
   return result;
 };
 
+const getAllFromDB = async (id: string): Promise<Booking[]> => {
+  const result = await prisma.booking.findMany({
+    where: {
+      userId: id,
+    },
+    include: {
+      user: true,
+      service: true,
+    },
+  });
+  return result;
+};
+const getByIdFromDB = async (
+  id: string,
+  bookingId: string
+): Promise<Booking[]> => {
+  const result = await prisma.booking.findMany({
+    where: {
+      userId: id,
+      id: bookingId,
+    },
+    include: {
+      user: true,
+      service: true,
+    },
+  });
+  return result;
+};
+
+const updateOneInDB = async (
+  id: string,
+  bookingId: string,
+  payload: Partial<Booking>
+): Promise<Booking> => {
+  const result = await prisma.booking.update({
+    where: {
+      userId: id,
+      id: bookingId,
+    },
+    data: payload,
+    include: {
+      user: true,
+      service: true,
+    },
+  });
+
+  return result;
+};
+
+const deleteByIdFromDB = async (
+  id: string,
+  bookingId: string
+): Promise<Booking> => {
+  const isPending = await prisma.booking.findUnique({
+    where: {
+      userId: id,
+      id: bookingId,
+    },
+  });
+
+  if (
+    isPending?.status === BookingStatus.accepted ||
+    isPending?.status === BookingStatus.rejected
+  ) {
+    throw new ApiError(httpStatus.CONFLICT, 'This Booking Allready Accepted');
+  } else {
+    const result = await prisma.booking.delete({
+      where: {
+        userId: id,
+        id: bookingId,
+      },
+    });
+    return result;
+  }
+};
+
 export const BookingsService = {
   insartIntoDB,
+  getAllFromDB,
+  getByIdFromDB,
+  deleteByIdFromDB,
+  updateOneInDB,
 };
