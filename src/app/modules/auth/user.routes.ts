@@ -2,11 +2,17 @@ import express from 'express';
 
 import { ENUM_USER_ROLE } from '../../../enums/user';
 import auth from '../../middlewares/auth';
+import validateRequest from '../../middlewares/validateRequest';
 import { UserController } from './user.controller';
+import { userValidation } from './user.validation';
 
 const router = express.Router();
 
-router.post('/register', UserController.registerUSer);
+router.post(
+  '/register',
+  validateRequest(userValidation.create),
+  UserController.registerUSer
+);
 router.post(
   '/superadmin/users',
   auth(ENUM_USER_ROLE.SUPER_ADMIN),
