@@ -4,10 +4,11 @@ import { AuthRouter } from '../modules/auth/user.routes';
 import { BlogRoutes } from '../modules/blog/blog.toute';
 import { BookingsRouter } from '../modules/bookings/bookings.routes';
 import { CategoryRoutes } from '../modules/category/category.routes';
+import { FaqsRoutes } from '../modules/faqs/faqs.toute';
+import { FeedbackRoutes } from '../modules/feedback/feedback.toute';
 import { ReviewAndRatingRoutes } from '../modules/reviewAndRating/reviewAndRating.routes';
 import { ServicesRouter } from '../modules/services/services.routes';
 import { UserRouter } from '../modules/user/user.routes';
-import { FaqsRoutes } from '../modules/faqs/faqs.toute';
 
 const router = express.Router();
 
@@ -44,6 +45,10 @@ const moduleRoutes = [
   {
     path: '/faqs',
     routes: FaqsRoutes,
+  },
+  {
+    path: '/feedback',
+    routes: FeedbackRoutes,
   },
 ];
 
