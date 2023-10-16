@@ -55,7 +55,7 @@ const updateIntoDB = catchAsync(async (req: Request, res: Response) => {
 
 const deleteFromDB = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
-
+  console.log(id, 'id');
   const result = await CategoryService.deleteFromDB(id);
 
   sendResponse(res, {

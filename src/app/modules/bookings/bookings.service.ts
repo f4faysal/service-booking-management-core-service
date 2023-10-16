@@ -57,18 +57,39 @@ const getAllFromDB = async (id: string): Promise<Booking[]> => {
 const getByIdFromDB = async (
   id: string,
   bookingId: string
-): Promise<Booking[]> => {
-  const result = await prisma.booking.findMany({
+): Promise<any | Booking[]> => {
+  const isAdmin = await prisma.user.findUnique({
     where: {
-      userId: id,
-      id: bookingId,
+      id: id,
     },
-    include: {
-      user: true,
-      service: true,
+    select: {
+      role: true,
     },
   });
-  return result;
+  if (isAdmin?.role === 'admin') {
+    const result = await prisma.booking.findUnique({
+      where: {
+        id: bookingId,
+      },
+      include: {
+        user: true,
+        service: true,
+      },
+    });
+    return result;
+  } else {
+    const result = await prisma.booking.findMany({
+      where: {
+        userId: id,
+        id: bookingId,
+      },
+      include: {
+        user: true,
+        service: true,
+      },
+    });
+    return result;
+  }
 };
 
 const updateOneInDB = async (

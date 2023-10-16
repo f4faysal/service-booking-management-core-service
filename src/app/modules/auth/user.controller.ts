@@ -53,7 +53,7 @@ const loginUser: RequestHandler = catchAsync(
       statusCode: 200,
       success: true,
       message: 'User logged in successfully !',
-      token: result,
+      accessToken: result,
     });
   }
 );

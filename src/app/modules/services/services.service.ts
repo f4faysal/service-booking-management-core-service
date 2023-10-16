@@ -3,11 +3,7 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import {
-  facultyRelationalFields,
-  facultyRelationalFieldsMapper,
-  serviceSearchableFields,
-} from './services.contants';
+import { serviceSearchableFields } from './services.contants';
 import { IServiceFilters } from './services.interface';
 
 const insertIntoDB = async (data: Services): Promise<Services> => {
@@ -41,26 +37,18 @@ const getAllFromDB = async (
     });
   }
 
-  if (Object.keys(filterData).length > 0) {
+  // console.log(Object.values(filterData));
+  console.log(Object.values(filterData)[0]);
+  if (Object.values(filterData)[0] != '') {
+    console.log(Object.values(filterData)[0]);
     andConditions.push({
-      AND: Object.keys(filterData).map(key => {
-        if (facultyRelationalFields.includes(key)) {
-          return {
-            [facultyRelationalFieldsMapper[key]]: {
-              id: (filterData as any)[key],
-            },
-          };
-        } else {
-          return {
-            [key]: {
-              equals: (filterData as any)[key],
-            },
-          };
-        }
-      }),
+      AND: Object.keys(filterData).map(key => ({
+        [key]: {
+          equals: (filterData as any)[key],
+        },
+      })),
     });
   }
-
   // if (minPrice !== undefined) {
   //   andConditions.push({
   //     price: {

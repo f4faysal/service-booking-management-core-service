@@ -1,4 +1,6 @@
 import { Prisma, Role, User } from '@prisma/client';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
@@ -113,7 +115,10 @@ const deleteFromDB = async (
       const result = await prisma.user.delete({ where: { id } });
       return result;
     } else {
-      return null;
+      throw new ApiError(
+        httpStatus.UNAUTHORIZED,
+        'You are not authorized for delete this user'
+      );
     }
   } else if (isAdminExist?.role === Role.super_admin) {
     const isUserExist = await prisma.user.findUnique({ where: { id } });
@@ -121,10 +126,16 @@ const deleteFromDB = async (
       const result = await prisma.user.delete({ where: { id } });
       return result;
     } else {
-      return null;
+      throw new ApiError(
+        httpStatus.UNAUTHORIZED,
+        'You are not authorized for delete this user'
+      );
     }
   }
-  return null;
+  throw new ApiError(
+    httpStatus.UNAUTHORIZED,
+    'You are not authorized for delete this user'
+  );
 };
 
 const getProfile = async (userId: string): Promise<User | null> => {

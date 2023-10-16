@@ -14,7 +14,7 @@ router.post(
   UserController.registerUSer
 );
 router.post(
-  '/superadmin/users',
+  '/superadmin/user',
   validateRequest(userValidation.create),
   auth(ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.addNewAdmin

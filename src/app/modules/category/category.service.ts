@@ -31,6 +31,8 @@ const updateIntoDB = async (
 };
 
 const deleteFromDB = async (id: string): Promise<Categories | null> => {
+  console.log(id);
+  // const result = await prisma.categories.delete({ where: { id } });
   const result = await prisma.categories.delete({ where: { id } });
   return result;
 };

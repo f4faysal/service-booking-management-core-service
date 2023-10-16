@@ -7,7 +7,7 @@ import { UserController } from './user.controller';
 const router = express.Router();
 
 router.get(
-  '/users/all',
+  '/user/list',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.getAllFromDB
 );
@@ -19,18 +19,19 @@ router.get(
 );
 
 router.patch(
-  '/superadmin/users/:id',
+  '/superadmin/user/:id',
   auth(ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.updateAdminRoles
 );
 
 router.delete(
   '/user/:id',
-  auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.deleteFromDB
 );
+
 router.patch(
-  '/profile/',
+  '/user/profile',
   auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER, ENUM_USER_ROLE.SUPER_ADMIN),
   UserController.updateIntoDB
 );
