@@ -15,6 +15,7 @@ const insartIntoDB = async (data: Booking, id: string): Promise<Booking> => {
       date: data.date,
     },
   });
+
   const existingBooking = alreadyBooked.map(schedule => {
     return {
       date: schedule.date,
@@ -43,6 +44,24 @@ const insartIntoDB = async (data: Booking, id: string): Promise<Booking> => {
 };
 
 const getAllFromDB = async (id: string): Promise<Booking[]> => {
+  const isAdmin = await prisma.user.findUnique({
+    where: {
+      id: id,
+    },
+    select: {
+      role: true,
+    },
+  });
+
+  if (isAdmin?.role === 'admin') {
+    const result = await prisma.booking.findMany({
+      include: {
+        user: true,
+        service: true,
+      },
+    });
+    return result;
+  }
   const result = await prisma.booking.findMany({
     where: {
       userId: id,
@@ -54,6 +73,7 @@ const getAllFromDB = async (id: string): Promise<Booking[]> => {
   });
   return result;
 };
+
 const getByIdFromDB = async (
   id: string,
   bookingId: string
