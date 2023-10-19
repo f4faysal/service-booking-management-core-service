@@ -111,15 +111,25 @@ const getByIdFromDB = async (
     return result;
   }
 };
+const getByUserFromDB = async (userId: string): Promise<any | Booking[]> => {
+  const result = await prisma.booking.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      user: true,
+      service: true,
+    },
+  });
+  return result;
+};
 
 const updateOneInDB = async (
-  id: string,
   bookingId: string,
   payload: Partial<Booking>
 ): Promise<Booking> => {
   const result = await prisma.booking.update({
     where: {
-      userId: id,
       id: bookingId,
     },
     data: payload,
@@ -165,4 +175,5 @@ export const BookingsService = {
   getByIdFromDB,
   deleteByIdFromDB,
   updateOneInDB,
+  getByUserFromDB,
 };

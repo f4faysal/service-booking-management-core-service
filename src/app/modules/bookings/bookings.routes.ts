@@ -13,10 +13,16 @@ router.post(
 );
 
 router.get(
+  '/user',
+  auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
+  BookingsController.getByUserFromDB
+);
+router.get(
   '/',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),
   BookingsController.getAllFromDB
 );
+
 router.get(
   '/:id',
   auth(ENUM_USER_ROLE.USER, ENUM_USER_ROLE.ADMIN),

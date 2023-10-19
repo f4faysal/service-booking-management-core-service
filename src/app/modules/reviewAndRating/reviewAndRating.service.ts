@@ -45,7 +45,13 @@ const getAllFromDB = async (): Promise<Reviews[]> => {
 };
 
 const getByIdFromDB = async (id: string): Promise<Reviews[]> => {
-  const result = await prisma.reviews.findMany({ where: { serviceId: id } });
+  const result = await prisma.reviews.findMany({
+    where: { serviceId: id },
+    include: {
+      user: true,
+      service: true,
+    },
+  });
   return result;
 };
 

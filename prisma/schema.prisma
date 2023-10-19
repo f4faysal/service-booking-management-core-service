@@ -146,6 +146,7 @@ model Feedback {
   id        String   @id @default(uuid())
   name      String
   email     String
+  comment   String
   message   String
   createdAt DateTime @default(now())
 

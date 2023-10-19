@@ -45,13 +45,26 @@ const getByIdFromDB: RequestHandler = catchAsync(
     });
   }
 );
+const getByUserFromDB: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { userId } = req.user as { userId: string };
+
+    const result = await BookingsService.getByUserFromDB(userId);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Booking faced successfully',
+      data: result,
+    });
+  }
+);
 
 const updateOneInDB: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { userId } = req.user as { userId: string };
     const { id } = req.params;
 
-    const result = await BookingsService.updateOneInDB(userId, id, req.body);
+    const result = await BookingsService.updateOneInDB(id, req.body);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -82,6 +95,7 @@ export const BookingsController = {
   getAllFromDB,
   insartIntoDB,
   getByIdFromDB,
+  getByUserFromDB,
   deleteByIdFromDB,
   updateOneInDB,
 };
