@@ -3,6 +3,10 @@
 
 Service Booking Management Core Service is a backend application designed to manage service bookings, user profiles, and administrative operations. This service is built using Next.js, Prisma, PostgreSQL, JWT (JSON Web Tokens), and other technologies.
 
+## Live Project Links:
+- [User-Facing Frontend](https://motel-front-end.vercel.app/)
+- [Admin Dashboard](https://motel-dashboard.vercel.app/)
+
 ## ER Diadram
 ![ER Diagram](https://res.cloudinary.com/dhvuyehnq/image/upload/v1697754735/sb6ufm9ahiirxgva5sfz.png)
 
