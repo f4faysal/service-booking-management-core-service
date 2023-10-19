@@ -3,6 +3,9 @@
 
 Service Booking Management Core Service is a backend application designed to manage service bookings, user profiles, and administrative operations. This service is built using Next.js, Prisma, PostgreSQL, JWT (JSON Web Tokens), and other technologies.
 
+![ER Diagram](https://res.cloudinary.com/dhvuyehnq/image/upload/v1697754735/sb6ufm9ahiirxgva5sfz.png)
+
+
 ## Table of Contents
 
 - [Features](#features)
@@ -15,7 +18,7 @@ Service Booking Management Core Service is a backend application designed to man
   - [Super Admin-Facing Features](#super-admin-facing-features)
 - [API Endpoints](#api-endpoints)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 ## Features
 
@@ -124,8 +127,3 @@ Contributions to this project are welcome. If you would like to contribute, plea
 
 5. Create a pull request to the main repository.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
