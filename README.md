@@ -132,5 +132,5 @@ Contributions to this project are welcome. If you would like to contribute, plea
    postgresql://postgres:Cnah!6K2.S-V3bu@db.weoifhohbzyzfeongrgu.supabase.co:5432/postgres
    ```
 
-5. Create a pull request to the main repository.
+5. Create a pull request to the main repository...
 
